@@ -22,18 +22,6 @@ export const IntegrationApp: FC = () => {
       if (!isConfig(element.config)) {
         throw new Error('Invalid configuration of the custom element. Please check the documentation.');
       }
-
-      const client = createManagementClient({
-        projectId: '9417fe95-a4eb-0194-b38c-96650dd5cbe6', // id of your Kontent.ai environment
-        subscriptionId: 'f922dbc9-a65b-47a7-94e6-0a99e64e9e6b', // optional, but required for Subscription related endpoints
-        apiKey: 'ew0KICAiYWxnIjogIkhTMjU2IiwNCiAgInR5cCI6ICJKV1QiDQp9.ew0KICAianRpIjogIjJiYzhiNWFhMTZkMjQxMDRhMWEzYjc3ZjNkY2I5NDFmIiwNCiAgImlhdCI6ICIxNjgwNzcwMDg0IiwNCiAgImV4cCI6ICIxNzQzOTI4NDQwIiwNCiAgInZlciI6ICIzLjAuMCIsDQogICJ1aWQiOiAieTBxNnhtRFNiaTFNS2NGZXA4MUtieTd4Y1hFWWk5dncxeVZhMmdkQWlyayIsDQogICJzdWJzY3JpcHRpb25faWQiOiAiZjkyMmRiYzlhNjViNDdhNzk0ZTYwYTk5ZTY0ZTllNmIiLA0KICAiYXVkIjogIm1hbmFnZS5rZW50aWNvY2xvdWQuY29tIg0KfQ.Go5DY5uteC_SL1DNmKliyYMJskPI6K11ld5-jItVd-g' // Content management API token
-    });
-
-    const users = new Array()
-    client.listSubscriptionUsers().toPromise().then((response) => {
-      response.data.items.map(user =>  users.push(user.firstName))   });
-    setUsers(users)
-
       setConfig(element.config);
       setProjectId(context.projectId);
       setIsDisabled(element.disabled);
@@ -61,6 +49,16 @@ export const IntegrationApp: FC = () => {
     }
     CustomElement.observeElementChanges([config.textElementCodename], () => updateWatchedElementValue(config.textElementCodename));
   }, [config, updateWatchedElementValue]);
+
+  useEffect(() => {
+  const client = createManagementClient({
+    projectId: '9417fe95-a4eb-0194-b38c-96650dd5cbe6', // id of your Kontent.ai environment
+    subscriptionId: 'f922dbc9-a65b-47a7-94e6-0a99e64e9e6b', // optional, but required for Subscription related endpoints
+    apiKey: 'ew0KICAiYWxnIjogIkhTMjU2IiwNCiAgInR5cCI6ICJKV1QiDQp9.ew0KICAianRpIjogIjJiYzhiNWFhMTZkMjQxMDRhMWEzYjc3ZjNkY2I5NDFmIiwNCiAgImlhdCI6ICIxNjgwNzcwMDg0IiwNCiAgImV4cCI6ICIxNzQzOTI4NDQwIiwNCiAgInZlciI6ICIzLjAuMCIsDQogICJ1aWQiOiAieTBxNnhtRFNiaTFNS2NGZXA4MUtieTd4Y1hFWWk5dncxeVZhMmdkQWlyayIsDQogICJzdWJzY3JpcHRpb25faWQiOiAiZjkyMmRiYzlhNjViNDdhNzk0ZTYwYTk5ZTY0ZTllNmIiLA0KICAiYXVkIjogIm1hbmFnZS5rZW50aWNvY2xvdWQuY29tIg0KfQ.Go5DY5uteC_SL1DNmKliyYMJskPI6K11ld5-jItVd-g' // Content management API token
+});
+
+  client.listSubscriptionUsers().toPromise().then(users => setUsers(users.data.items?.map(user => user.id) ?? []));
+}, []);
 
   const selectAssets = () =>
     CustomElement.selectAssets({ allowMultiple: true, fileType: 'all' })
