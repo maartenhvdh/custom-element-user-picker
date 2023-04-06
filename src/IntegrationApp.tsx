@@ -28,7 +28,7 @@ export const IntegrationApp: FC = () => {
   }, [updateValue]);
 
   useEffect(() => {
-    CustomElement.setHeight(100);
+    CustomElement.setHeight(200);
   }, []);
 
   useEffect(() => {
