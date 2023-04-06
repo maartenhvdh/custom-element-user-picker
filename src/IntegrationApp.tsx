@@ -43,8 +43,8 @@ export const IntegrationApp: FC = () => {
   useEffect(() => {
     const client = createManagementClient({
       projectId: projectId, // id of your Kontent.ai environment
-      subscriptionId: 'f922dbc9-a65b-47a7-94e6-0a99e64e9e6b', // optional, but required for Subscription related endpoints
-      apiKey: 'ew0KICAiYWxnIjogIkhTMjU2IiwNCiAgInR5cCI6ICJKV1QiDQp9.ew0KICAianRpIjogIjJiYzhiNWFhMTZkMjQxMDRhMWEzYjc3ZjNkY2I5NDFmIiwNCiAgImlhdCI6ICIxNjgwNzcwMDg0IiwNCiAgImV4cCI6ICIxNzQzOTI4NDQwIiwNCiAgInZlciI6ICIzLjAuMCIsDQogICJ1aWQiOiAieTBxNnhtRFNiaTFNS2NGZXA4MUtieTd4Y1hFWWk5dncxeVZhMmdkQWlyayIsDQogICJzdWJzY3JpcHRpb25faWQiOiAiZjkyMmRiYzlhNjViNDdhNzk0ZTYwYTk5ZTY0ZTllNmIiLA0KICAiYXVkIjogIm1hbmFnZS5rZW50aWNvY2xvdWQuY29tIg0KfQ.Go5DY5uteC_SL1DNmKliyYMJskPI6K11ld5-jItVd-g' // Content management API token
+      subscriptionId: '397f37ec-a2b9-4675-9d6a-5d5e44e03bbb', // optional, but required for Subscription related endpoints
+      apiKey: 'ew0KICAiYWxnIjogIkhTMjU2IiwNCiAgInR5cCI6ICJKV1QiDQp9.ew0KICAianRpIjogIjE2ZGZlMzcxMDhkYjQ4NmY4MTc1YjAyM2FhN2ViMDFhIiwNCiAgImlhdCI6ICIxNjgwNzg1MDk5IiwNCiAgImV4cCI6ICIxNzI4MjE4NjQwIiwNCiAgInZlciI6ICIzLjAuMCIsDQogICJ1aWQiOiAieTBxNnhtRFNiaTFNS2NGZXA4MUtieTd4Y1hFWWk5dncxeVZhMmdkQWlyayIsDQogICJzdWJzY3JpcHRpb25faWQiOiAiMzk3ZjM3ZWNhMmI5NDY3NTlkNmE1ZDVlNDRlMDNiYmIiLA0KICAiYXVkIjogIm1hbmFnZS5rZW50aWNvY2xvdWQuY29tIg0KfQ.rseUuCItAwyqgf7Z7O9-UkT1bWq8jdNxP474MnXU7zU' // Content management API token
     });
     client.listSubscriptionUsers().toPromise().then(users => setUsers(users.data.items.map(user => ({
       name: user.firstName + " " + user.lastName,
