@@ -1,8 +1,14 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { createManagementClient } from '@kontent-ai/management-sdk';
+import { createManagementClient, SubscriptionModels } from '@kontent-ai/management-sdk';
 import Multiselect from 'multiselect-react-dropdown';
 
+export type SelectOption = {
+  name: string,
+  id: string,
+}
+
 export const IntegrationApp: FC = () => {
+
   const [config, setConfig] = useState<Config | null>(null);
   const [projectId, setProjectId] = useState<string | null>(null);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -11,7 +17,7 @@ export const IntegrationApp: FC = () => {
   const [selectedAssetNames, setSelectedAssetNames] = useState<ReadonlyArray<string>>([]);
   const [selectedItemNames, setSelectedItemNames] = useState<ReadonlyArray<string>>([]);
   const [elementValue, setElementValue] = useState<string | null>(null);
-  const [users, setUsers] = useState<ReadonlyArray<string>>([]);
+  const [users, setUsers] = useState<ReadonlyArray<SubscriptionModels.SubscriptionUser>>([]);
 
   const updateWatchedElementValue = useCallback((codename: string) => {
     CustomElement.getElementValue(codename, v => typeof v === 'string' && setWatchedElementValue(v));
@@ -56,9 +62,15 @@ export const IntegrationApp: FC = () => {
     subscriptionId: 'f922dbc9-a65b-47a7-94e6-0a99e64e9e6b', // optional, but required for Subscription related endpoints
     apiKey: 'ew0KICAiYWxnIjogIkhTMjU2IiwNCiAgInR5cCI6ICJKV1QiDQp9.ew0KICAianRpIjogIjJiYzhiNWFhMTZkMjQxMDRhMWEzYjc3ZjNkY2I5NDFmIiwNCiAgImlhdCI6ICIxNjgwNzcwMDg0IiwNCiAgImV4cCI6ICIxNzQzOTI4NDQwIiwNCiAgInZlciI6ICIzLjAuMCIsDQogICJ1aWQiOiAieTBxNnhtRFNiaTFNS2NGZXA4MUtieTd4Y1hFWWk5dncxeVZhMmdkQWlyayIsDQogICJzdWJzY3JpcHRpb25faWQiOiAiZjkyMmRiYzlhNjViNDdhNzk0ZTYwYTk5ZTY0ZTllNmIiLA0KICAiYXVkIjogIm1hbmFnZS5rZW50aWNvY2xvdWQuY29tIg0KfQ.Go5DY5uteC_SL1DNmKliyYMJskPI6K11ld5-jItVd-g' // Content management API token
 });
+  client.listSubscriptionUsers().toPromise().then(users => setUsers(users.data.items));
 
-  client.listSubscriptionUsers().toPromise().then(users => setUsers(users.data.items?.map(user => user.id) ?? []));
 }, []);
+
+  const options = () =>  users.map(user => ({
+      name : user.firstName + " " + user.lastName,
+      id : user.id
+    }))
+  
 
   const selectAssets = () =>
     CustomElement.selectAssets({ allowMultiple: true, fileType: 'all' })
@@ -106,8 +118,9 @@ export const IntegrationApp: FC = () => {
       </section>
       <section>
         {users}
+        {options}
       <Multiselect
-options={users} // Options to display in the dropdown
+options={options} // Options to display in the dropdown
 displayValue="name" // Property name to display in the dropdown options
 />
       </section>
