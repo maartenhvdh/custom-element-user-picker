@@ -54,8 +54,6 @@ export const IntegrationApp: FC = () => {
   }, []);
 
   const onSelect = (selectedList: User[], selectedItem: User) => {
-    console.log(selectedList)
-    console.log(selectedItem)
     updateValue(selectedList)
   }
   const onRemove = (selectedList: User[], removedItem: User) => {
@@ -63,10 +61,6 @@ export const IntegrationApp: FC = () => {
   }
 
   return (
-    <>
-      <h1>
-        This is a great integration with the Kontent.ai app.
-      </h1>
       <section>
         <Multiselect
           options={users} // Options to display in the dropdown
@@ -76,7 +70,6 @@ export const IntegrationApp: FC = () => {
           displayValue="name" // Property name to display in the dropdown options
         />
       </section>
-    </>
   );
 };
 
