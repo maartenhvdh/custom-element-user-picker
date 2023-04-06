@@ -71,6 +71,8 @@ export const IntegrationApp: FC = () => {
       id : user.id
     }))
   
+    console.log(users)
+    console.log(options)
 
   const selectAssets = () =>
     CustomElement.selectAssets({ allowMultiple: true, fileType: 'all' })
@@ -117,8 +119,10 @@ export const IntegrationApp: FC = () => {
         <button onClick={selectItems}>Select different items</button>
       </section>
       <section>
-        {users.toString()}
-        {options.toString()}
+      <Multiselect
+options={options} // Options to display in the dropdown
+displayValue="name" // Property name to display in the dropdown options
+/>
       </section>
     </>
   );
