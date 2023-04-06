@@ -119,10 +119,6 @@ export const IntegrationApp: FC = () => {
       <section>
         {users.toString()}
         {options.toString()}
-      <Multiselect
-options={options} // Options to display in the dropdown
-displayValue="name" // Property name to display in the dropdown options
-/>
       </section>
     </>
   );
