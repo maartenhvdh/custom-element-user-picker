@@ -1,22 +1,20 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import { createManagementClient } from '@kontent-ai/management-sdk';
 import Multiselect from 'multiselect-react-dropdown';
+import { User } from './types/user'
 
-export type SelectOption = {
-  name: string,
-  id: string,
-}
 
 export const IntegrationApp: FC = () => {
   const [projectId, setProjectId] = useState<string | "">("");
   const [isDisabled, setIsDisabled] = useState(false);
   const [itemName, setItemName] = useState<string | null>(null);
-  const [watchedElementValue, setWatchedElementValue] = useState<string | null>(null);
-  const [elementValue, setElementValue] = useState<SelectOption | null>(null);
-  const [users, setUsers] = useState<ReadonlyArray<SelectOption | null>>([]);
+  const [elementValue, setElementValue] = useState<ReadonlyArray<User>>([]);
+  const [users, setUsers] = useState<ReadonlyArray<User | null>>([]);
 
-  const updateWatchedElementValue = useCallback((codename: string) => {
-    CustomElement.getElementValue(codename, v => typeof v === 'string' && setWatchedElementValue(v));
+  const updateValue = useCallback((newValue: ReadonlyArray<User>) => {
+    // send null instead of [] so that the element fails validation when it should not be empty
+    CustomElement.setValue(newValue.length ? JSON.stringify(newValue) : null);
+    setElementValue(newValue);
   }, []);
 
   useEffect(() => {
@@ -24,12 +22,13 @@ export const IntegrationApp: FC = () => {
       setProjectId(context.projectId);
       setIsDisabled(element.disabled);
       setItemName(context.item.name);
-      setElementValue(element.value ?? '');
+      const value = JSON.parse(element.value || '[]');
+      setElementValue(Array.isArray(value) ? value : [value]);
     });
-  }, [updateWatchedElementValue]);
+  }, [updateValue]);
 
   useEffect(() => {
-    CustomElement.setHeight(500);
+    CustomElement.setHeight(100);
   }, []);
 
   useEffect(() => {
@@ -54,12 +53,13 @@ export const IntegrationApp: FC = () => {
 
   }, []);
 
-  const onSelect = (selectedList: SelectOption, selectedItem: SelectOption) => {
+  const onSelect = (selectedList: User[], selectedItem: User) => {
+    console.log(selectedList)
     console.log(selectedItem)
-    setElementValue(selectedList);
+    updateValue(selectedList)
   }
-  const onRemove = (selectedList: SelectOption, removedItem: SelectOption) => {
-    setElementValue(selectedList);
+  const onRemove = (selectedList: User[], removedItem: User) => {
+    updateValue(selectedList)
   }
 
   return (
@@ -70,6 +70,7 @@ export const IntegrationApp: FC = () => {
       <section>
         <Multiselect
           options={users} // Options to display in the dropdown
+          selectedValues={elementValue}
           onSelect={onSelect} // Function will trigger on select event
           onRemove={onRemove} // Function will trigger on remove event
           displayValue="name" // Property name to display in the dropdown options
