@@ -117,8 +117,8 @@ export const IntegrationApp: FC = () => {
         <button onClick={selectItems}>Select different items</button>
       </section>
       <section>
-        {users}
-        {options}
+        {users.toString()}
+        {options.toString()}
       <Multiselect
 options={options} // Options to display in the dropdown
 displayValue="name" // Property name to display in the dropdown options
