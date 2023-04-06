@@ -66,13 +66,13 @@ export const IntegrationApp: FC = () => {
 
 }, []);
 
-  const options = () =>  users.map(user => ({
-      name : user.firstName + " " + user.lastName,
-      id : user.id
-    }))
+  // const options = () =>  users.map(user => ({
+  //     name : user.firstName + " " + user.lastName,
+  //     id : user.id
+  //   }))
   
     console.log(users)
-    console.log(options)
+    // console.log(options)
 
   const selectAssets = () =>
     CustomElement.selectAssets({ allowMultiple: true, fileType: 'all' })
