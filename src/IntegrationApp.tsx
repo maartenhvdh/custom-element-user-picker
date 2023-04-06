@@ -54,13 +54,12 @@ export const IntegrationApp: FC = () => {
 
   }, []);
 
-  console.log(users)
-
   const onSelect = (selectedList: SelectOption, selectedItem: SelectOption) => {
-    setElementValue(selectedItem);
+    console.log(selectedItem)
+    setElementValue(selectedList);
   }
   const onRemove = (selectedList: SelectOption, removedItem: SelectOption) => {
-    setElementValue(removedItem);
+    setElementValue(selectedList);
   }
 
   return (
